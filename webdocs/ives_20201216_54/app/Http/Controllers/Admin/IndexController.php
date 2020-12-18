@@ -12,3 +12,6 @@ class IndexController extends Controller
         echo '這是Admin分組下的index方法';
     }
 }
+
+# 接收用戶輸入
+

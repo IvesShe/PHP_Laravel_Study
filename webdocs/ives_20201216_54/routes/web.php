@@ -74,3 +74,13 @@ Route::get('/home/test/test1', 'TestController@test1');
 Route::get('/home/index/index', 'Home\IndexController@index');
 Route::get('/admin/index/index', 'Admin\IndexController@index');
 
+// 增加測試路由
+Route::get('/home/test/test2', 'TestController@test2');
+
+// DB門面的增刪改查
+Route::group(['prefix' => 'home/test'],function(){
+    Route::get('add', 'TestController@add');
+    Route::get('del', 'TestController@del');
+    Route::get('update', 'TestController@update');
+    Route::get('select', 'TestController@select');
+});

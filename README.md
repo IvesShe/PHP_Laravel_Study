@@ -287,3 +287,352 @@ Route::get('/admin/index/index', 'Admin\IndexController@index');
 ![image](./images/20201217211033.png)
 
 ![image](./images/20201217211044.png)
+
+
+# 接收用戶輸入
+
+設定別名
+
+![image](./images/20201218145522.png)
+
+```php
+// 自己添加別名
+'Input' => Illuminate\Support\Facades\Input::class,
+```
+
+增加測試路由
+
+![image](./images/20201218150425.png)
+
+```php
+// 增加測試路由
+Route::get('/home/test/test2', 'TestController@test2');
+```
+
+![image](./images/20201218150400.png)
+
+```php
+use Input;
+
+// test2測試Input獲取數據
+public function test2(){
+    echo Input::get('id','10086') . '<br/>';
+
+        // 獲取全部的值(數組型式的返回)
+        $all = Input::all();
+        //var_dump($all);
+
+        // dd = dump+die
+        //dd($all);   
+
+        // 獲取指定的信息(字符串型式)
+        //dd(Input::get('name'));
+
+        // 獲取指定的幾個值(數組型式)
+        //dd(Input::only(['id','name']));
+
+        // 獲取除了指定值之外的值
+        //dd(Input::except(['name']));
+
+        // 判斷某個值存在與否
+        dd(Input::has(['gender']));
+}
+```
+
+![image](./images/20201218152038.png)
+
+```
+http://www.1223.com/home/test/test2?id=15555&name=ives&age=18&gender=0
+```
+
+```php
+// 獲取指定的幾個值(數組型式)
+dd(Input::only(['id','name']));
+```
+
+![image](./images/20201218151544.png)
+
+```php
+// 獲取除了指定值之外的值
+dd(Input::except(['name']));
+```
+
+![image](./images/20201218151705.png)
+
+# DB類 操作數據庫
+
+# 創建數據庫
+
+![image](./images/20201218151705.png)
+
+# 創建數據表
+
+```sql
+create table member(
+    id int primary key auto_increment,
+    name varchar(32) not null,
+    age tinyint unsigned not null,
+    email varchar(32) not null
+)engine myisam charset utf8;
+```
+
+![image](./images/20201218153034.png)
+
+![image](./images/20201218153058.png)
+
+# 修改Laravel數據庫配置 - 方式一
+
+在框架根目錄下有這個檔案
+
+.env
+
+![image](./images/20201218153523.png)
+
+# 修改Laravel數據庫配置 - 方式二
+
+在config目錄下面的database.php文件裡面配置，使用env函數，表示先以env文件里面獲取，如果獲取成功則使用，如果獲取失敗，則使用env函數的第二個參數。
+
+![image](./images/20201218153959.png)
+
+# 在Test控制器中引入DB門面
+
+config/app.php 已內建DB的別名了
+
+![image](./images/20201218155148.png)
+
+所以這裡可以直接引用
+
+![image](./images/20201218155030.png)
+
+# 定義增刪改查需要的路由
+
+- 增加： /home/test/add
+- 刪除： /home/test/del
+- 修改： /home/test/update
+- 查詢： /home/test/select
+
+```php
+// DB門面的增刪改查
+Route::group(['prefix' => 'home/test'],function(){
+    Route::get('add', 'TestController@add');
+    Route::get('del', 'TestController@del');
+    Route::get('update', 'TestController@update');
+    Route::get('select', 'TestController@select');
+});
+```
+
+![image](./images/20201218161719.png)
+
+# 增加信息(insert)
+
+```php
+// DB 添加方法
+public function add(){
+    // 定義關聯操作的表
+    $db = DB::table('member');
+    
+    // 使用insert增加記錄，返回布爾類型
+    $result = $db -> insert([
+        [
+            'name' => 'ives777',
+            'age' => '18',
+            'email' => 'ivesshe@gmail.com',
+        ],
+        [
+            'name' => 'jack888',
+            'age' => '25',
+            'email' => 'jack@gmail.com',
+        ],
+    ]);
+
+    // 插入一條記錄方法insertGetId, 返回一組數據
+    // $result = $db -> insertGetId(
+    //         [
+    //             'name' => 'ives168',
+    //             'age' => '20',
+    //             'email' => 'ivesshe168@gmail.com',
+    //         ]
+    // );
+
+    dd($result);
+    }
+```
+
+![image](./images/20201218164352.png)
+
+![image](./images/20201218164431.png)
+
+![image](./images/20201218164705.png)
+
+![image](./images/20201218164926.png)
+
+# 更新信息(update)
+
+```php
+// DB 修改方法
+public function update(){
+    // 定義關聯操作的表
+    $result = $db = DB::table('member');
+
+    // 修改id為1的用戶的名稱為Tom
+    // 會返回影響的行數
+    $result = $db -> where('id','=','1') -> update([
+        // 需要修改字段的鍵值對
+        'name' => 'Tom',
+    ]);
+
+    dd($result);
+}
+```
+
+![image](./images/20201218165002.png)
+
+id為1的name字段，被修改為Tom了
+
+![image](./images/20201218165010.png)
+
+其它語法
+
+```php
+// 每次+1
+DB:table('member')->increment('votes');
+// 每次+5
+DB:table('member')->increment('votes',5);
+// 每次-1
+DB:table('member')->decrement('votes');
+// 每次-5
+DB:table('member')->decrement('votes',5);
+```
+
+# 查詢方法
+
+```php
+// DB 查詢方法
+public function select(){
+// 定義關聯操作的表
+    $db = DB::table('member');
+
+    // 查詢全部的數據
+    $data = $db -> get();    
+
+    dd($data);
+}
+```
+
+![image](./images/20201218205853.png)
+
+```php
+// 嘗試循環下數據
+    foreach($data as $key => $value){
+        echo "id是: {$value -> id}，名字是: {$value -> name}，郵箱是： {$value -> email} <br/> ";
+    }
+```
+
+![image](./images/20201218210426.png)
+
+Get查詢的結果，每一行的記錄是對象的型式，不是數組。
+
+```php
+// 查詢id>3的數據
+$data = $db -> where('id','>','3') -> get();
+```
+
+![image](./images/20201218210659.png)
+
+> 注意： where方法之後繼續調用where方法。
+
+```php
+-> where() -> where() -> where()...     // 這個語法是 並且(and) 關係語法
+-> where() -> orWhere() -> orWhere()... // 這個語法是 或者(or) 關係語法
+// orWhere方法的參數與where一致
+```
+
+```php
+// 查詢id>3 並且 age小於30的數據
+        $data = $db -> where('id','>','3') -> where('age','<',"30") -> get();
+```
+
+![image](./images/20201218211139.png)
+
+```php
+// 查詢id>3 或 age小於30的數據
+        $data = $db -> where('id','>','3') -> orWhere('age','<',"30") -> get();
+```
+
+![image](./images/20201218211335.png)
+
+
+```php
+// 取出單行記錄
+$data = $db -> first();
+```
+
+![image](./images/20201218211537.png)
+
+```php
+// 取出指定字段的值
+$data = DB::table('member')->where('id','1')->value('name');
+```
+
+![image](./images/20201218211745.png)
+
+
+```php
+// 查詢指定的一些字段的值
+$data = DB::table('member')->select('name','email')->get();
+```
+
+![image](./images/20201218211927.png)
+
+```php
+// 按照指定的字段進行特定規則的排序 按age降序
+$data = DB::table('member')->orderBy('age','desc')->get();
+```
+
+![image](./images/20201218212139.png)
+
+```php
+// 分頁操作 從第一筆開始秀、秀2筆
+// limit: 表示限制輸出的條數
+// offset: 從什麼地方開始
+$data = DB::table('member')->limit(2)->offset(1)->get();
+```
+
+![image](./images/20201218212533.png)
+
+# 刪除數據
+
+在刪除中，有兩種方式
+
+1. 物理刪除(本質就是刪除)
+2. 邏輯刪除(本質是修改)
+
+```php
+// 刪除id為1的記錄
+$result = $db -> where('id','=','1') -> delete();
+```
+
+![image](./images/20201218212936.png)
+
+![image](./images/20201218212943.png)
+
+```php
+// 補充語法
+DB::table('member')->truncate();
+```
+
+# 執行任意的SQL語句(了解就好)
+
+執行任意的insert update delete語句(影響記錄的語句是使用statement語法)
+
+```php
+DB::statement("insert into member values(null,"")");
+```
+
+執行任意的select語法(不影響記錄的語句使用select語法)
+
+```php
+$res = DB::select("select * from member");
+```
+
+

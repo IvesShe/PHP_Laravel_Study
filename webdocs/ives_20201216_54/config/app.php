@@ -226,6 +226,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // 自己添加別名
+        'Input' => Illuminate\Support\Facades\Input::class,
     ],
 
 ];
