@@ -1,4 +1,4 @@
-# PHP Laravel Study
+# PHP Laravel Study(搭配MYSQL)
 
 # 可以使用PHP下載安裝
 
