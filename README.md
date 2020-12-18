@@ -139,6 +139,8 @@ php artisan serve
 
 ![image](./images/20201217182633.png)
 
+![image](./images/20201218144205.png)
+
 # 路由
 
 ![image](./images/20201217192921.png)
