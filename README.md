@@ -635,4 +635,170 @@ DB::statement("insert into member values(null,"")");
 $res = DB::select("select * from member");
 ```
 
+# 視圖
 
+視圖目錄
+
+![image](./images/20201219142900.png)
+
+- 文件名習慣小寫(建議小寫)
+- 文件名的後綴是 .blade.php (因為laravel裡面有一套模板引擎就是使用blade，可以直接使用標籤語法{{$title}}，也可以使用原生php語法顯示數據)
+- 需要注意的是也可以使用 .php 結尾，但是這樣的話就不能夠使用laravel提供的標籤{{$title}}顯示數據，只能使用原生語法 <?php echo $title; ?>顯示數據
+- 兩個視圖文件同時存在時，則 .blade.php 後綴的優先顯示。
+
+TestController.php
+```php
+// view 測試
+public function viewtest(){
+// 展示視圖
+//return view('home/viewtest');
+return view('home.viewtest');
+}
+```
+
+web.php
+```php
+// view測試
+Route::get('/home/viewtest', 'TestController@viewtest');
+```
+
+![image](./images/20201219144541.png)
+
+![image](./images/20201219144556.png)
+
+![image](./images/20201219144436.png)
+
+# 變量分配與展示
+
+TestController.php
+```php
+public function viewtest(){
+    // 現在時間
+    $date = date('Y-m-d H:i:s',time());
+    // 獲取今天的星期
+    $day = '日';
+    // 展示視圖
+    //return view('home/viewtest');
+    return view('home.viewtest',['date' => $date,'day' => $day]);
+}
+```
+
+viewtest.blade.php
+```php
+當前訪問的是viewtest.blade.php <br/>
+現在是: {{$date}}, 今天是星期{{$day}}
+```
+
+![image](./images/20201219145212.png)
+
+![image](./images/20201219145230.png)
+
+![image](./images/20201219145241.png)
+
+# 擴展：compact函數使用(傳參)
+
+Compact函數，是php內置函數，跟laravel框架沒有關係，作用主要是用於打包數組。
+
+```php
+// 語法
+compact("變量名1","變量名2"...)
+```
+
+```php
+return view('home.viewtest',compact('date','day'));
+```
+
+# 模板中直接使用函數
+
+TestController.php
+```php
+public function viewtest(){
+    // 現在時間
+    $date = date('Y-m-d H:i:s',time());
+    // 獲取今天的星期
+    $day = '日';
+    // 傳遞時間戳
+    $time = strtotime('+1 year');
+    // 展示視圖
+    return view('home.viewtest',compact('date','day','time'));
+}
+```
+
+viewtest.blade.php
+```php
+當前訪問的是viewtest.blade.php <br/>
+現在是: {{$date}}, 今天是星期{{$day}}
+一年之後的時間是： {{$time}}
+```
+
+![image](./images/20201219171150.png)
+
+
+viewtest.blade.php
+```php
+當前訪問的是viewtest.blade.php <br/>
+現在是: {{$date}}, 今天是星期{{$day}}
+一年之後的時間是： {{$time}}
+一年之後的時間是： {{date('Y-m-d H:i:s',$time)}}
+```
+
+![image](./images/20201219171443.png)
+
+
+# 循環與分支語法標籤
+
+```php
+// php的寫法
+foreach($variable as $key => $value){
+    // 循環體
+}
+
+// laravel中視圖的寫法
+@foreach($variable as $key => $value)
+    //循環體
+@endforeach
+```
+
+![image](./images/20201219173111.png)
+
+![image](./images/20201219173149.png)
+
+![image](./images/20201219173228.png)
+
+![image](./images/20201219173057.png)
+
+# if 判斷
+
+```php
+// php的寫法
+if(條件表達式1){
+    執行的語句1
+}elseif(條件表達式2){
+    執行的語句2
+}elseif(條件表達式3){
+    執行的語句3    
+}
+...
+else{
+    默認的執行的語句
+}
+
+// laravel中視圖的寫法
+@if(條件表達式1)
+    執行的語句1
+@elseif(條件表達式2)   
+    執行的語句2
+@elseif(條件表達式3)   
+    執行的語句3    
+@else
+   默認的執行的語句
+@endif
+```
+
+![image](./images/20201219174104.png)
+
+![image](./images/20201219174129.png)
+
+![image](./images/20201219174058.png)
+
+# 模板繼續/包含

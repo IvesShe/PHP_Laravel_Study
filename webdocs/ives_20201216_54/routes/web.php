@@ -84,3 +84,9 @@ Route::group(['prefix' => 'home/test'],function(){
     Route::get('update', 'TestController@update');
     Route::get('select', 'TestController@select');
 });
+
+// view測試
+Route::get('/home/viewtest', 'TestController@viewtest');
+
+// foreach測試
+Route::get('/home/foreachtest', 'TestController@foreachtest');

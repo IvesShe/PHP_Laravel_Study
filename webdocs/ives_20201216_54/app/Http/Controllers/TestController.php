@@ -138,4 +138,33 @@ class TestController extends Controller
 
         dd($result);
     }
+
+    // view 測試
+    public function viewtest(){
+        // 現在時間
+        $date = date('Y-m-d H:i:s',time());
+        // 獲取今天的星期
+        $day = '日';
+
+        // 傳遞時間戳
+        $time = strtotime('+1 year');
+        // $time = strtotime('+1 month');
+        // $time = strtotime('+1 week');
+        // $time = strtotime('+1 day');
+
+        // 展示視圖
+        //return view('home/viewtest');
+        //return view('home.viewtest',['date' => $date,'day' => $day]);
+        return view('home.viewtest',compact('date','day','time'));
+    }
+
+    // foreach 循環標籤
+    public function foreachtest(){
+        // 查詢數據
+        $data = DB::table('member') -> get();
+        // 獲取今天的星期數字，傳遞的參數可以參考PHP手冊關於date的部分
+        $day = date('N');
+        // 展示視圖，傳遞數據
+        return view('home.foreachtest',compact('data','day'));
+    }
 }
