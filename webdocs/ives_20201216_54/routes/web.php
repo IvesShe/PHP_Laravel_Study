@@ -90,3 +90,6 @@ Route::get('/home/viewtest', 'TestController@viewtest');
 
 // foreach測試
 Route::get('/home/foreachtest', 'TestController@foreachtest');
+
+// 繼承 extends
+Route::get('/home/extends', 'TestController@extends');

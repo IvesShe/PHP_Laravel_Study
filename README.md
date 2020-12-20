@@ -423,7 +423,7 @@ Route::group(['prefix' => 'home/test'],function(){
 
 ![image](./images/20201218161719.png)
 
-# 增加信息(insert)
+# DB 增加信息(insert)
 
 ```php
 // DB 添加方法
@@ -466,7 +466,7 @@ public function add(){
 
 ![image](./images/20201218164926.png)
 
-# 更新信息(update)
+# DB 更新信息(update)
 
 ```php
 // DB 修改方法
@@ -504,7 +504,7 @@ DB:table('member')->decrement('votes');
 DB:table('member')->decrement('votes',5);
 ```
 
-# 查詢方法
+# DB 查詢方法
 
 ```php
 // DB 查詢方法
@@ -600,7 +600,7 @@ $data = DB::table('member')->limit(2)->offset(1)->get();
 
 ![image](./images/20201218212533.png)
 
-# 刪除數據
+# DB 刪除數據
 
 在刪除中，有兩種方式
 
@@ -801,4 +801,20 @@ else{
 
 ![image](./images/20201219174058.png)
 
-# 模板繼續/包含
+# 模板繼承/包含
+
+## 繼承 extends
+
+![image](./images/20201219202520.png)
+
+![image](./images/20201219202536.png)
+
+![image](./images/20201219202553.png)
+
+![image](./images/20201219202347.png)
+
+## 包含 include
+
+![image](./images/20201219202852.png)
+
+![image](./images/20201219202912.png)

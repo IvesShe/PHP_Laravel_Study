@@ -167,4 +167,10 @@ class TestController extends Controller
         // 展示視圖，傳遞數據
         return view('home.foreachtest',compact('data','day'));
     }
+
+    // 繼承
+    public function extends(){
+        // 展示視圖
+        return view('home.child');
+    }
 }
